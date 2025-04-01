@@ -1,0 +1,73 @@
+Install Windows From Ventoy (GNU GRUB Version 2.04)
+If you have Windows files on an SSD/HDD that you are using to install Windows without a USB drive, and your PC supports UEFI, but you accidentally shut down your PC during the installation from the drive, and you don't have a USB drive but have a SIM card reader that supports memory cards, you can flash Ventoy using an Android phone to repair the installation.
+
+You Must Have These Things to Repair in an Emergency:
+1. Android Phone
+2. SIM Card Adapter with SD card support and Wi-Fi support
+3. SIM Card Adapter that supports only SIM card and SD card
+4. OTG Cable
+5. Ventoy APK
+6. Extracted ISO files in SSD/HDD for Windows installation
+
+Step-by-Step Process:
+
+1. Install Ventoy on Android Phone:
+- Install Ventoy on your Android phone by downloading the Ventoy APK.
+- Open the Ventoy app and grant all permissions that the app asks for.
+
+2. Insert SD Card in SIM Card Adapter with SD Card Support and Wi-Fi Support:
+- Insert the SD card into the SIM card adapter with SD card support and Wi-Fi support.
+
+3. Flash Ventoy with GPT and Secure Boot Enabled:
+- Open the Ventoy APK on your Android phone.
+- Flash Ventoy onto the SD card, ensuring that you choose the options for GPT partitioning and Secure Boot enabled.
+
+4. Switch SD Card to SIM Card Adapter with Only SIM Card and SD Card Support:
+- After flashing Ventoy, eject the SD card from the first adapter and insert it into the SIM card adapter that only supports SIM card and SD card.
+
+5. Plug SIM Card Adapter into Laptop:
+- Plug the SIM card adapter (with SD card) into your laptop.
+
+6. Enter BIOS on Laptop:
+- Turn on your laptop and keep pressing the BIOS key (usually F2, Del, or Esc, depending on your laptop).
+- Once in the BIOS, press Esc and click "Yes" to exit BIOS.
+
+7. GNU GRUB Version 2.04 Appears:
+- After exiting the BIOS, you will see GNU GRUB version 2.04 screen on your laptop.
+
+Use These Commands One by One, but First Understand:
+
+At the GRUB prompt, you need to use the following commands to locate your Windows installation and boot it.
+
+GRUB Commands:
+
+1. Load the GPT partition module:
+nsmod part_gpt
+
+2. Load the chainloader module:
+insmod chain
+
+3. Set the root partition (This assumes your Windows installation is on the first GPT partition, you may need to adjust this):
+set root=(hd0,gpt1)
+
+4. Chainload the Windows bootloader:
+chainloader /efi/boot/bootx64.efi
+
+5. Boot into Windows:
+boot
+
+Before Using the Commands, You Should Find Your Drive:
+
+1. List the drives to check available partitions:
+ls
+
+2. Check each partition (e.g., (hd0,gpt1), (hd0,gpt2), etc.) and confirm the location of your Windows installation:
+ls (hd0,gpt1)
+ls (hd0,gpt2)
+
+3. Once you’ve identified the correct partition, use the `set root=(hd0,gpt1)` command for that partition, and then proceed with the chainloading command:
+set root=(hd0,gpt1)
+chainloader /efi/boot/bootx64.efi
+boot
+
+By following these steps, you should be able to boot into your Windows installation and resume or repair it without needing a USB drive.
